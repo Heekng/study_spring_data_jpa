@@ -1,8 +1,10 @@
 package study.datajpa.repository;
 
 
+import org.hibernate.boot.model.source.spi.AttributePath;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -48,4 +50,19 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     //clearAutomatically 기존 flush, clear을 하던 것을 자동으로 하도록 설정
     @Query("update Member m set m.age = m.age + 1 where m.age >= :age")
     int bulkAgePlus(@Param("age") int age);
+
+    @Query("select m from Member m left join fetch m.team t")
+    List<Member> fineMemberFetchJoin();
+
+    @Override
+    @EntityGraph(attributePaths = {"team"}) // fetch join을 따로 할 필요 없이 어노테이션으로 해결 가능 (LEFT OUTER JOIN)
+    List<Member> findAll();
+
+    @EntityGraph(attributePaths = {"team"})
+    @Query("select m from Member m")
+    List<Member> findMemberEntityGraph();
+
+    @EntityGraph(attributePaths = {"team"})
+//    @EntityGraph("Member.all") // Member entity에 미리 정의 후 사용할 수 있음
+    List<Member> findEntityGraphByUsername(@Param("username") String username);
 }

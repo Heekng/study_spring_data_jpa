@@ -14,6 +14,14 @@ spring:
 #        show_sql: true # jpa가 실행하는 모든 행위를 콘솔에 찍는 것
         format_sql: true # 포매팅해서 보기 좋게 출력해줌
 
+#  pageable global setting
+  data:
+    web:
+      pageable:
+        default-page-size: 10
+        max-page-size: 2000
+        one-indexed-parameters: true # 임의로 페이지 1부터 시작하게 설정(권장하지 않음)
+
 logging:
   level:
     org.hibernate.SQL: debug # 로그로 기록을 남긴다.

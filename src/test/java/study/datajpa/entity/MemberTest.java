@@ -1,12 +1,15 @@
 package study.datajpa.entity;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+import study.datajpa.repository.MemberRepository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -17,6 +20,8 @@ class MemberTest {
 
     @PersistenceContext
     EntityManager em;
+    @Autowired
+    MemberRepository memberRepository;
 
     @Test
     public void testEntity() throws Exception {
@@ -52,6 +57,33 @@ class MemberTest {
         }
 
 
+    }
+
+    @Test
+    public void jpaEventBaseEntity() throws Exception {
+        //given
+        Member member = new Member("member1");
+        memberRepository.save(member);
+
+        Thread.sleep(100);
+        member.setUsername("member2");
+
+        em.flush(); //@PreUpdate
+        em.clear();
+
+        //when
+        Member findMember = memberRepository.findById(member.getId()).get();
+
+        //then
+        LocalDateTime createdDate = findMember.getCreatedDate();
+//        LocalDateTime updatedDate = findMember.getUpdatedDate();
+        LocalDateTime updatedDate = findMember.getLastModifiedDate();
+        String createdBy = findMember.getCreatedBy();
+        String lastModifiedBy = findMember.getLastModifiedBy();
+        System.out.println("createdDate = " + createdDate);
+        System.out.println("updatedDate = " + updatedDate);
+        System.out.println("createdBy = " + createdBy);
+        System.out.println("lastModifiedBy = " + lastModifiedBy);
     }
 
 }

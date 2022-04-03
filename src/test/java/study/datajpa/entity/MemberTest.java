@@ -78,12 +78,12 @@ class MemberTest {
         LocalDateTime createdDate = findMember.getCreatedDate();
 //        LocalDateTime updatedDate = findMember.getUpdatedDate();
         LocalDateTime updatedDate = findMember.getLastModifiedDate();
-        String createdBy = findMember.getCreatedBy();
-        String lastModifiedBy = findMember.getLastModifiedBy();
+//        String createdBy = findMember.getCreatedBy();
+//        String lastModifiedBy = findMember.getLastModifiedBy();
         System.out.println("createdDate = " + createdDate);
         System.out.println("updatedDate = " + updatedDate);
-        System.out.println("createdBy = " + createdBy);
-        System.out.println("lastModifiedBy = " + lastModifiedBy);
+//        System.out.println("createdBy = " + createdBy);
+//        System.out.println("lastModifiedBy = " + lastModifiedBy);
     }
 
 }
